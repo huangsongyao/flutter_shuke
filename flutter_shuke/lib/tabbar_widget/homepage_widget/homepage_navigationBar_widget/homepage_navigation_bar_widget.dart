@@ -20,13 +20,13 @@ class _HomepageNavigationBarWidgetState
   Widget build(BuildContext context) {
     return Container(
       width: ScreenTools.AppScreenContextWidths(context),
-      height: 210.0,
       color: Colors.green,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           HomepageNavigationBarHeaderStatelessWidget(
               avatarUrlString: widget.barModel.avatarUrlString),
+          HomepageHeaderCustomAssetsHeaderwidget(),
         ],
       ),
     );
@@ -66,8 +66,7 @@ class _HomepageNavigationBarHeaderStatelessWidgetState
               child: Container(
                   color: Colors.red,
                   child: ImageLocationCustomButtonWidget(
-                    type: ImageLocationCustomButtonType
-                        .imageLocationRight,
+                    type: ImageLocationCustomButtonType.imageLocationRight,
                     iconName: "explore_icon_def",
                     title: "登入领取收入预结",
                     fontSize: 15,
@@ -84,7 +83,19 @@ class _HomepageNavigationBarHeaderStatelessWidgetState
 class HomepageHeaderCustomAssetsHeaderwidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          HomepageHeaderCustomAssetsWidget(
+              title: "总资产(￥)",
+              assets: "0.00",
+              showEyesButton: true,
+              eyeStatus: true),
+          HomepageHeaderCustomAssetsWidget(title: "我的待还(￥)", assets: "0.00"),
+        ],
+      ),
+    );
   }
 }
 
@@ -92,27 +103,79 @@ class HomepageHeaderCustomAssetsHeaderwidget extends StatelessWidget {
 class HomepageHeaderCustomAssetsWidget extends StatefulWidget {
   final bool showEyesButton;
   final String title;
-  HomepageHeaderCustomAssetsWidget({Key key, this.showEyesButton, @required this.title}) : super(key: key);
+  final String assets;
+  final bool eyeStatus;
+
+  HomepageHeaderCustomAssetsWidget(
+      {Key key,
+      this.showEyesButton = false,
+      @required this.title,
+      @required this.assets,
+      this.eyeStatus = false})
+      : super(key: key);
+
   @override
-  _HomepageHeaderCustomAssetsWidgetState createState() => _HomepageHeaderCustomAssetsWidgetState();
+  _HomepageHeaderCustomAssetsWidgetState createState() =>
+      _HomepageHeaderCustomAssetsWidgetState();
 }
 
-class _HomepageHeaderCustomAssetsWidgetState extends State<HomepageHeaderCustomAssetsWidget> {
+class _HomepageHeaderCustomAssetsWidgetState
+    extends State<HomepageHeaderCustomAssetsWidget> {
+  bool _closedEyes;
+  String _iconName;
+
+  String get getIconName =>
+      (_closedEyes == true ? "server_icon_def" : "server_icon_sel");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _iconName = this.getIconName;
+    _closedEyes = widget.eyeStatus;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ContainerTools.boxContainer(_widgetSizes(), Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-
-        ],
-      ),
-    ));
+    return ContainerTools.boxContainer(
+        _widgetSizes(context),
+        Container(
+          margin: EdgeInsets.only(top: 5.0),
+          color: (widget.showEyesButton ? Colors.greenAccent : Colors.brown),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(widget.title),
+                  (widget.showEyesButton
+                      ? IconButton(
+                          icon: ImageAssetsTools.imageAssets(_iconName),
+                          onPressed: updateButtonStatus)
+                      : Container()),
+                ],
+              ),
+              Container(
+                child: Text(widget.assets),
+              ),
+            ],
+          ),
+        ));
   }
-  Size _widgetSizes() {
-    double oneWidths = (ScreenTools.AppScreenContextWidths(context) - 30.0)/5.0;
-    double heights = 100.0;
-    return (widget.showEyesButton ? Size(oneWidths*3.0, heights) : Size(oneWidths*2.0, heights));
+
+  Size _widgetSizes(BuildContext context) {
+    double oneWidths =
+        (ScreenTools.AppScreenContextWidths(context) - 30.0) / 5.0;
+    double heights = 80.0;
+    return (widget.showEyesButton
+        ? Size(oneWidths * 3.0, heights)
+        : Size(oneWidths * 2.0, heights));
+  }
+
+  void updateButtonStatus() {
+    _closedEyes = (_closedEyes == true ? false : true);
+    setState(() {
+      _iconName = this.getIconName;
+    });
   }
 }
 

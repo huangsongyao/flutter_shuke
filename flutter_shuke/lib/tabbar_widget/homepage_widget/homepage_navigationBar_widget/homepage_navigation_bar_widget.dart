@@ -143,18 +143,25 @@ class _HomepageHeaderCustomAssetsWidgetState
           margin: EdgeInsets.only(top: 5.0),
           color: (widget.showEyesButton ? Colors.greenAccent : Colors.brown),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(widget.title),
                   (widget.showEyesButton
-                      ? IconButton(
-                          icon: ImageAssetsTools.imageAssets(_iconName),
-                          onPressed: updateButtonStatus)
+                      ? Container(
+                          margin: EdgeInsets.only(left: 10.0),
+                          child: GestureDetector(
+                            child: ImageAssetsTools.imageAssets(_iconName),
+                            onTap: updateButtonStatus,
+                          ),
+                        )
                       : Container()),
                 ],
               ),
               Container(
+                color: Colors.red,
                 child: Text(widget.assets),
               ),
             ],
@@ -175,6 +182,7 @@ class _HomepageHeaderCustomAssetsWidgetState
     _closedEyes = (_closedEyes == true ? false : true);
     setState(() {
       _iconName = this.getIconName;
+      print(_iconName);
     });
   }
 }

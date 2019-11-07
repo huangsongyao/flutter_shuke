@@ -138,35 +138,45 @@ class _HomepageHeaderCustomAssetsWidgetState
   @override
   Widget build(BuildContext context) {
     return ContainerTools.boxContainer(
-        _widgetSizes(context),
-        Container(
-          margin: EdgeInsets.only(top: 5.0),
-          color: (widget.showEyesButton ? Colors.greenAccent : Colors.brown),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(widget.title),
-                  (widget.showEyesButton
-                      ? Container(
-                          margin: EdgeInsets.only(left: 10.0),
-                          child: GestureDetector(
-                            child: ImageAssetsTools.imageAssets(_iconName),
-                            onTap: updateButtonStatus,
-                          ),
-                        )
-                      : Container()),
-                ],
+      _widgetSizes(context),
+      Container(
+        margin: EdgeInsets.only(top: 5.0),
+        padding: EdgeInsets.only(top: 20.0, left: 20.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(6.0),
+            ),
+            image: DecorationImage(
+              image: ExactAssetImage(
+                ImageAssetsTools.imageAssetsName("explore_icon_def"),
               ),
-              Container(
-                color: Colors.red,
-                child: Text(widget.assets),
-              ),
-            ],
-          ),
-        ));
+            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(widget.title),
+                (widget.showEyesButton
+                    ? Container(
+                        margin: EdgeInsets.only(left: 10.0),
+                        child: GestureDetector(
+                          child: ImageAssetsTools.imageAssets(_iconName),
+                          onTap: updateButtonStatus,
+                        ),
+                      )
+                    : Container()),
+              ],
+            ),
+            Container(
+              color: Colors.red,
+              child: Text(widget.assets),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Size _widgetSizes(BuildContext context) {
@@ -191,6 +201,7 @@ class _HomepageHeaderCustomAssetsWidgetState
 class HomepageNavigationBarCustomPayStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double fontSize = 9;
     return Container(
       color: Colors.blue,
       margin: EdgeInsets.only(left: 15.0, right: 15.0),
@@ -201,9 +212,12 @@ class HomepageNavigationBarCustomPayStatelessWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ImageLocationCustomButtonWidget(
-                  type: ImageLocationCustomButtonType.imageLocationTop,
-                  iconName: "im_icon_def",
-                  title: "扫一扫")
+                type: ImageLocationCustomButtonType.imageLocationTop,
+                iconName: "im_icon_def",
+                title: "扫一扫",
+                fontSize: fontSize,
+                offsets: 3.0,
+              )
             ],
           ),
           ContainerTools.rowMarginTainer(rowOffsets: 10.0),
@@ -211,9 +225,12 @@ class HomepageNavigationBarCustomPayStatelessWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ImageLocationCustomButtonWidget(
-                  type: ImageLocationCustomButtonType.imageLocationTop,
-                  iconName: "server_icon_def",
-                  title: "付款码"),
+                type: ImageLocationCustomButtonType.imageLocationTop,
+                iconName: "server_icon_def",
+                title: "付款码",
+                fontSize: fontSize,
+                offsets: 3.0,
+              ),
             ],
           ),
         ],
